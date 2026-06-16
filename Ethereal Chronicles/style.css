@@ -1,0 +1,1143 @@
+/* ==========================================================================
+   CONFIGURACIÓN GLOBAL Y COMPONENTE ANTI-SELECCIÓN
+   ========================================================================== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+:root {
+    --oro-brillante: #f3e5ab;
+    --oro-sutil: #d4af37;
+    --blanco-cristal: rgba(255, 255, 255, 0.9);
+    --fondo-panel: rgba(4, 5, 8, 0.95);
+    --borde-menu: rgba(214, 175, 55, 0.25);
+}
+
+body {
+    font-family: 'Cinzel', 'Times New Roman', serif;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    
+    /* CAPAS DE NIEBLA MÍSTICA (Efecto difuminado como el de tu imagen) */
+    background-color: #020617;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(30, 27, 75, 0.6) 0%, transparent 60%),
+        radial-gradient(circle at 50% 40%, rgba(46, 16, 101, 0.4) 0%, transparent 70%);
+    background-size: 200% 200%;
+    
+    /* Disparamos el movimiento de las masas de luz */
+    animation: nieblaEtherea 12s ease-in-out infinite;
+}
+/* ==========================================================================
+   CONTROL DE APERTURA NATIVA DEL MULTIVERSO
+   ========================================================================== */
+#toggleMultiverso {
+    display: none !important;
+}
+
+/* Si se activa, el Nexo baja al centro de la pantalla y oculta lo demás */
+#toggleMultiverso:checked ~ #menuPrincipal { 
+    display: none !important; 
+}
+#toggleMultiverso:checked ~ .contenedor-multiverso {
+    display: flex !important;
+    top: 50% !important; 
+}.contenedor-multiverso {
+    /* ... tus estilos viejos ... */
+    overflow: hidden !important; /* Corta con guillotina cualquier texto que intente salirse por los lados */
+}
+
+
+/* Parche para que no se pise con Ajustes ni Nueva Partida */
+#toggleMultiverso:checked ~ #panelAjustes,
+#toggleMultiverso:checked ~ #panelNuevaPartida {
+    display: none !important;
+}
+#toggleAjustes:checked ~ .contenedor-multiverso,
+/* ==========================================================================
+   DISEÑO DE CADA NODO DE MUNDO Y SUS COMPONENTES VISUALES
+   ========================================================================== */
+
+/* Contenedor individual de cada mundo (Usa coordenadas absolutas) */
+.mundo-nodo {
+    position: absolute;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 20;
+}
+
+/* --- COORDENADAS MATEMÁTICAS EN LA RED --- */
+.nodo-ethereal { top: 55%; left: 15%; }
+.nodo-neon { top: 55%; left: 75%; }
+.nodo-chronos { top: 6%; left: 45%; }
+
+/* LA DIADEMA DEL PLANETA (El núcleo físico) */
+.diadema-planeta {
+    width: 45px;
+    height: 45px;
+    background: rgba(4, 5, 8, 0.95);
+    border-radius: 50%; /* Círculo perfecto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 25;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+    transition: all 0.3s ease;
+}
+
+/* Cambios de color específicos según el tipo de mundo */
+.nodo-ethereal .diadema-planeta { border: 2px solid var(--oro-sutil); }
+.nodo-neon .diadema-planeta { border: 2px solid #06b6d4; } /* Azul neón ciberpunk */
+.nodo-chronos .diadema-planeta { border: 2px solid #ea580c; }
+
+/* Efecto hover premium al pasar el mouse por encima */
+.mundo-nodo:hover .diadema-planeta {
+    transform: scale(1.15);
+    box-shadow: 0 0 20px rgba(214, 175, 55, 0.4);
+}
+/* Activación del pulso místico en Ethereal Vale */
+.nodo-ethereal:hover .diadema-planeta {
+    transform: scale(1.15);
+    animation: pulsoMagico 2s ease-in-out infinite;
+}
+
+/* Activación del cortocircuito eléctrico en Neon Abyss */
+.nodo-neon:hover .diadema-planeta {
+    transform: scale(1.15);
+    animation: parpadeoDigital 0.4s linear infinite; /* Ultra rápido */
+}
+
+/* Activación de la anomalía temporal en Chronos Rift */
+.nodo-chronos:hover .diadema-planeta {
+    /* La escala ya va dentro del keyframe para que vibre con estilo */
+    animation: vibracionTemporal 0.15s linear infinite; /* Frecuencia rúnica inestable */
+}
+
+.icono-mundo {
+    font-size: 18px;
+}
+
+/* --- EFECTO: AURAS EXPANDIDAS QUE MARCAN LA FRONTERA --- */
+.aura-frontera {
+    position: absolute;
+    width: 260px; /* Círculo gigante que desborda el nodo */
+    height: 260px;
+    border-radius: 50%;
+    z-index: 15;
+    pointer-events: none; /* No estorba los clics */
+    opacity: 0.25;
+    mix-blend-mode: screen; /* Fusiona los colores al chocar */
+    transition: all 0.4s ease;
+}
+
+/* Degradados radiales para que el aura se desvanezca en la orilla */
+.nodo-ethereal .aura-frontera {
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.3) 0%, transparent 65%);
+}
+.nodo-neon .aura-frontera {
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.25) 0%, transparent 65%);
+}
+.nodo-chronos .aura-frontera {
+    background: radial-gradient(circle, rgba(234, 88, 12, 0.25) 0%, transparent 65%);
+}
+
+/* El aura brilla más al pasar el mouse */
+.mundo-nodo:hover .aura-frontera {
+    opacity: 0.45;
+    transform: scale(1.05);
+}
+
+/* --- LA LÍNEA DETALLADA CON DEGRADADO A SUS ORILLAS --- */
+/* --- LA ESTRUCTURA BASE PARA TODAS LAS LÍNEAS LÁSER --- */
+.linea-red-multiverso {
+    position: absolute;
+    height: 1px;
+    z-index: 10;
+    opacity: 0.5;
+}
+
+/* 1. Línea horizontal base abajo (Une Ethereal Vale con Neon Abyss) */
+.linea-horizontal {
+    top: 60%;
+    left: 20%;
+    width: 58%;
+    background: linear-gradient(to right, transparent, var(--oro-sutil), #06b6d4, transparent);
+}
+
+/* 2. Línea diagonal izquierda (Ethereal Vale -> Chronos Rift) - CALIBRADA */
+.linea-diagonal-izq {
+    top: 59%;
+    left: 19%;
+    width: 38%;
+    background: linear-gradient(to right, transparent, var(--oro-sutil), #ea580c, transparent);
+    transform: rotate(-33deg); /* Apunta hacia arriba a la derecha */
+    transform-origin: left center;
+}
+
+/* 3. Línea diagonal derecha (Une Neon Abyss con Chronos Rift) - ¡CALIBRACIÓN MILIMÉTRICA! */
+.linea-diagonal-der {
+    top: 59%;
+    left: 78%; /* Cambiamos el punto de inicio para que encaje perfecto */
+    width: 36%; 
+    background: linear-gradient(to right, #ea580c, #06b6d4, transparent);
+    transform: rotate(-145deg); /* ¡EL ÁNGULO MAESTRO! Gira exactamente para cerrar el triángulo hacia la derecha */
+    transform-origin: left center;
+}
+
+
+/* --- TEXTOS FLOTANTES INFORMATIVOS DEL MUNDO --- */
+.datos-mundo-flotante {
+    position: absolute;
+    bottom: -45px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 150px;
+    text-align: center;
+    pointer-events: none;
+}
+
+.nombre-mundo {
+    color: var(--blanco-cristal);
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.tipo-mundo {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 9px;
+    margin-top: 3px;
+    letter-spacing: 1px;
+}
+
+#toggleNuevaPartida:checked ~ .contenedor-multiverso {
+    top: -120% !important;
+}
+
+/* ==========================================================================
+   EFECTO VISUAL: MOVIMIENTO ORGANICO DE NIEBLA MÍSTICA DIFUMINADA
+   ========================================================================== */
+@keyframes nieblaEtherea {
+    0% {
+        background-position: 0% 0%;
+    }
+    50% {
+        background-position: 100% 100%;
+    }
+    100% {
+        background-position: 0% 0%;
+    }
+}
+
+
+
+/* Esconder disparadores mecánicos */
+#toggleAjustes, .radio-pestana {
+    display: none !important;
+}
+
+/* Estructura base para las ventanas de la interfaz */
+.panel {
+    position: relative;
+    z-index: 10;
+    background: var(--fondo-panel);
+    border: 1px solid var(--borde-menu);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+    transition: all 0.4s ease;
+}
+
+/* ==========================================================================
+   DISEÑO PANEL 1: MENÚ PRINCIPAL
+   ========================================================================== */
+.contenedor-menu {
+    width: 420px;
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.titulo-juego {
+    color: var(--oro-brillante);
+    font-size: 32px;
+    letter-spacing: 6px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.subtitulo-juego {
+    color: rgba(161, 114, 27, 0.5);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    margin-bottom: 50px;
+}
+
+.opciones-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.boton-opcion {
+    background: transparent;
+    border: none;
+    color: rgba(192, 191, 191, 0.7);
+    font-family: inherit;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    padding: 12px;
+    cursor: pointer;
+    display: block;
+    text-align: center;
+    transition: all 0.3s;
+}
+
+.boton-opcion:hover {
+    color: #fff;
+    text-shadow: 0 0 10px var(--oro-brillante);
+}
+
+.btn-ajustes-activar {
+    background: rgba(214, 175, 55, 0.1);
+    border-radius: 4px;
+}
+
+/* ==========================================================================
+   DISEÑO PANEL 2: MENÚ DE AJUSTES AVANZADO GLOBLAL
+   ========================================================================== */
+.contenedor-ajustes {
+    width: 920px;
+    height: 560px;
+    display: none; /* Escondido por defecto */
+    padding: 30px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* LÓGICA DE APERTURA NATIVA POR SELECTORES CSS */
+#toggleAjustes:checked ~ #menuPrincipal { display: none !important; }
+#toggleAjustes:checked ~ #panelAjustes { display: flex !important; }
+
+.zona-superior-ajustes {
+    display: flex;
+    width: 100%;
+    height: 420px;
+}
+
+/* Barra de Navegación Lateral Izquierda */
+.pestanas-laterales {
+    width: 25%;
+    border-right: 1px solid rgba(214, 175, 55, 0.15);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding-right: 15px;
+    height: 100%;
+}
+
+.label-pestana {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 14px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-left: 3px solid transparent;
+}
+
+.label-pestana:hover {
+    color: var(--oro-brillante);
+}
+
+/* Bloque de Contenido Configurable Derecho */
+.contenido-ajustes {
+    width: 75%;
+    padding-left: 35px;
+    height: 100%;
+}
+
+.scroll-ajustes {
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Estructura base para las filas de configuración */
+.seccion-config {
+    display: none;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 10px;
+}
+
+/* Personalización de la barra de scroll de subida y bajada */
+.seccion-config::-webkit-scrollbar { width: 4px; }
+.seccion-config::-webkit-scrollbar-thumb { background: var(--oro-sutil); border-radius: 2px; }
+
+/* ENLACES DIRECTOS MECÁNICOS PARA MOSTRAR LAS SECCIONES */
+#tabGeneral:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionGeneral { display: flex !important; }
+#tabVideo:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionVideo { display: flex !important; }
+#tabSonido:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionSonido { display: flex !important; }
+#tabControles:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionControles { display: flex !important; }
+#tabAccesibilidad:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionAccesibilidad { display: flex !important; }
+#tabRendimiento:checked ~ .zona-superior-ajustes .contenido-ajustes .scroll-ajustes #seccionRendimiento { display: flex !important; }
+
+/* ILUMINAR PESTAÑA LATERAL ACTIVA */
+#tabGeneral:checked ~ .zona-superior-ajustes .pestanas-laterales .l-gen,
+#tabVideo:checked ~ .zona-superior-ajustes .pestanas-laterales .l-vid,
+#tabSonido:checked ~ .zona-superior-ajustes .pestanas-laterales .l-son,
+#tabControles:checked ~ .zona-superior-ajustes .pestanas-laterales .l-con,
+#tabAccesibilidad:checked ~ .zona-superior-ajustes .pestanas-laterales .l-acc,
+#tabRendimiento:checked ~ .zona-superior-ajustes .pestanas-laterales .l-ren {
+    color: var(--oro-brillante) !important;
+    border-left-color: var(--oro-sutil) !important;
+    background: rgba(214, 175, 55, 0.05) !important;
+    text-shadow: 0 0 8px rgba(243, 229, 171, 0.3) !important;
+}
+
+/* Títulos y Filas Internas de Opciones */
+.titulo-seccion {
+    color: var(--oro-brillante);
+    font-size: 15px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(214, 175, 55, 0.15);
+    padding-bottom: 8px;
+    margin-bottom: 5px;
+}
+
+.fila-ajuste {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 40px;
+}
+
+/* Nombres explicativos de la izquierda en BLANCO FIJO VISIBLE */
+.fila-ajuste label {
+    color: #ffffff !important;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Cajas de selección (Selects) */
+select {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(245, 184, 0, 0.3);
+    color: var(--blanco-cristal);
+    padding: 6px 12px;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    width: 220px;
+    outline: none;
+    cursor: pointer;
+}
+
+select:hover {
+    border-color: var(--oro-brillante);
+    color: #fff;
+}
+
+.texto-version {
+    color: #666;
+    font-size: 11px;
+    font-family: sans-serif;
+}
+
+/* ==========================================================================
+   BARRA INFERIOR DE BOTONES PRIMORDIALES (OK, APLICAR, ATRÁS)
+   ========================================================================== */
+.barra-botones-inferior {
+    width: 100%;
+    border-top: 1px solid rgba(209, 171, 56, 0.15);
+    padding-top: 15px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+}
+
+.btn-inferior {
+    background: transparent;
+    border: 1px solid rgba(214, 175, 55, 0.3);
+    color: var(--oro-brillante);
+    font-family: inherit;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 8px 24px;
+    cursor: pointer;
+    transition: all 0.3s;
+    border-radius: 2px;
+}
+
+.btn-inferior:hover {
+    background: var(--oro-sutil);
+    color: #000;
+    box-shadow: 0 0 10px rgba(214, 175, 55, 0.4);
+}
+
+.btn-atras {
+    border-color: rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.btn-atras:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+    box-shadow: none;
+}
+/* ==========================================================================
+   MÓDULO: NOTIFICACIÓN DE CANCIÓN ESTILO NFSU2 MÍSTICO
+   ========================================================================== */
+.notificacion-musica {
+    position: fixed;
+    bottom: 30px;
+    left: -350px; /* Escondida inicialmente fuera de la pantalla izquierda */
+    width: 280px;
+    background: rgba(4, 5, 8, 0.9);
+    border: 1px solid rgba(214, 175, 55, 0.4);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    z-index: 100;
+    backdrop-filter: blur(8px);
+    transition: all 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* Esquinas de adorno milimétricas para la notificación */
+.notificacion-musica::before {
+    content: ''; position: absolute; top: 4px; left: 4px; width: 6px; height: 6px;
+    border-top: 1px solid var(--oro-sutil); border-left: 1px solid var(--oro-sutil);
+}
+
+.icono-nota {
+    color: var(--oro-brillante);
+    font-size: 20px;
+    text-shadow: 0 0 8px var(--oro-brillante);
+    animation: rotarEstre 3s linear infinite;
+}
+
+.datos-cancion {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.info-titulo {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.info-autor {
+    color: var(--oro-brillante);
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    opacity: 0.8;
+}
+
+/* CLASE INYECTADA POR JS: Lanza la animación de Slide de 6 segundos */
+.animar-notificacion {
+    animation: slideCancion 6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+/* CINEMÁTICA DE MOVIMIENTO: Entra, se queda 3 segundos y se va */
+@keyframes slideCancion {
+    0% { left: -350px; opacity: 0; }
+    10% { left: 30px; opacity: 1; }  /* Entra deslizándose */
+    85% { left: 30px; opacity: 1; }  /* Se mantiene estática */
+    100% { left: -350px; opacity: 0; } /* Se vuelve a esconder */
+}
+
+@keyframes rotarEstre {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+/* ==========================================
+   SISTEMA DE CONTROL DE PANELES EXCLUSIVO
+   ========================================== */
+
+/* 1. Ocultamos por defecto los paneles secundarios */
+#panelAjustes, 
+#panelNuevaPartida {
+    display: none !important;
+}
+
+/* 2. Ocultamos por completo los checkboxes invisibles */
+#toggleAjustes, 
+#toggleNuevaPartida {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 3. SI SE ACTIVA AJUSTES: Muestra Ajustes y esconde el Menú */
+#toggleAjustes:checked ~ #panelAjustes {
+    display: flex !important; /* Usa 'block' si no usas flexbox */
+}
+#toggleAjustes:checked ~ #menuPrincipal {
+    display: none !important;
+}
+
+/* 4. SI SE ACTIVA NUEVA PARTIDA: Muestra Nueva Partida y esconde el Menú */
+#toggleNuevaPartida:checked ~ #panelNuevaPartida {
+    display: flex !important; /* Usa 'block' si no usas flexbox */
+}
+#toggleNuevaPartida:checked ~ #menuPrincipal {
+    display: none !important;
+}
+/* ==========================================================
+   DOMANDO LOS PANELES: ELIMINADOR DE CLONES
+   ========================================================== */
+
+/* 1. Forzamos a que SOLO el menú principal sea visible al cargar la página */
+#menuPrincipal {
+    display: flex !important; /* Si usas block, cámbialo por block */
+}
+
+/* 2. Forzamos a que los otros dos paneles nazcan completamente ocultos */
+#panelAjustes, 
+#panelNuevaPartida {
+    display: none !important;
+}
+
+/* 3. Ocultamos los checkboxes para que no estorben */
+#toggleAjustes, 
+#toggleNuevaPartida {
+    position: absolute !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* ==========================================================
+   LÓGICA MECÁNICA DE INTERRUPTORES
+   ========================================================== */
+
+/* Si se activa Ajustes: muestra ajustes y destruye la vista del menú principal */
+#toggleAjustes:checked ~ #panelAjustes {
+    display: flex !important;
+}
+#toggleAjustes:checked ~ #menuPrincipal {
+    display: none !important;
+}
+
+/* Si se activa Nueva Partida: muestra nueva partida y destruye la vista del menú principal */
+#toggleNuevaPartida:checked ~ #panelNuevaPartida {
+    display: flex !important;
+}
+#toggleNuevaPartida:checked ~ #menuPrincipal {
+    display: none !important;
+}
+/* Asegúrate de que el contenedor principal controle a sus hijos */
+#menuPrincipal {
+    position: relative; /* O absolute, según tu diseño original */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Los títulos NO deben ser absolute/fixed globales, deben fluir dentro del menú */
+.titulo-juego, 
+.subtitulo-juego {
+    position: static; /* Cambia esto si antes tenías absolute o fixed */
+    margin: 10px 0;
+    text-align: center;
+}
+/* Ocultar por defecto */
+#panelNuevaPartida {
+    display: none;
+}
+
+/* Mostrar solo cuando se activa el botón */
+#toggleNuevaPartida:checked ~ #panelNuevaPartida {
+    display: flex !important; /* Si usas block en tus otros paneles, cámbialo por block */
+}
+
+/* Esconder el menú principal para que no estorbe */
+#toggleNuevaPartida:checked ~ #menuPrincipal {
+    display: none !important;
+}
+/* ==========================================================================
+   MÓDULO: NOTIFICACIÓN DE CANCIÓN ESTILO NFSU2 MÍSTICO
+   ========================================================================== */
+.notif {
+    position: fixed;
+    bottom: 30px;
+    left: -350px; /* Nace escondida a la izquierda de la pantalla */
+    background: rgba(4, 5, 8, 0.95);
+    border: 1px solid var(--borde-menu);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    padding: 12px 20px;
+    display: flex !important; /* Forzamos flexbox para alinear icono y texto */
+    align-items: center;
+    gap: 15px;
+    border-radius: 4px;
+       z-index: 99999 !important;
+    transition: left 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto rebote premium */
+}
+
+/* Esta clase la activa el JavaScript al detectar la música */
+.notif.mostrar {
+       left: 30px !important;
+
+}
+
+.notif-icono {
+    font-size: 20px;
+    animation: pulsoIcono 2s infinite ease-in-out;
+}
+
+.notif-titulo {
+    color: var(--oro-brillante);
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.notif-artista {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 10px;
+    letter-spacing: 1px;
+}
+
+/* Animación de pulso para el icono de la nota musical */
+@keyframes pulsoIcono {
+    0%, 100% { transform: scale(1); text-shadow: 0 0 0px transparent; }
+    50% { transform: scale(1.1); text-shadow: 0 0 8px var(--oro-brillante); }
+}
+input[type="text"]:focus {
+    border-color: var(--oro-brillante) !important;
+    box-shadow: 0 0 8px rgba(255, 204, 0, 0.737) !important;
+}
+/* ==========================================================================
+   DISEÑO PANEL 5: EL NEXO DEL MULTIVERSO & ANIMACIÓN SLIDE
+   ========================================================================== */
+
+/* Escondemos el disparador del multiverso arriba del todo */
+#toggleMultiverso {
+    display: none !important;
+}
+
+/* Estructura base del panel del Multiverso */
+.contenedor-multiverso {
+    position: fixed; /* Flota sobre toda la pantalla */
+    top: -120%;      /* Nace completamente escondido arriba en el cielo */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Centrado matemático perfecto */
+    width: 1000px;
+    height: 600px;
+    padding: 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: top 0.7s cubic-bezier(0.19, 1, 0.22, 1); /* Transición suave premium */
+    z-index: 100;
+}
+
+/* LÓGICA MECÁNICA: Si se activa, se desliza al centro y apaga el menú de inicio */
+#toggleMultiverso:checked ~ #menuPrincipal { 
+    display: none !important; 
+}
+#toggleMultiverso:checked ~ .contenedor-multiverso { 
+    top: 50% !important; /* Baja al centro de la pantalla de golpe pero fluido */
+}
+
+/* Estilos de los textos del encabezado */
+.subtitulo-multiverso {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-top: 5px;
+}
+
+/* Contenedor del lienzo de la constelación */
+.mapa-red-mundos {
+    width: 100%;
+    height: 400px;
+    position: relative; /* Clave para poder posicionar los mundos con coordenadas */
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(214, 175, 55, 0.05);
+    overflow: hidden;
+    margin-top: 15px;
+}
+
+.barra-botones-multiverso {
+    width: 100%;
+    border-top: 1px solid rgba(214, 175, 55, 0.15);
+    padding-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+/* ==========================================================================
+   ANIMACIONES ÚNICAS DE PULSO INTERDIMENSIONAL (EFECTOS DE MUNDOS)
+   ========================================================================== */
+
+/* 1. PULSO MÁGICO (Respiración dorada suave) */
+@keyframes pulsoMagico {
+    0% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.8); }
+    100% { box-shadow: 0 0 15px rgba(212, 175, 55, 0.4); }
+}
+
+/* 2. PARPADEO DIGITAL (Cortocircuito eléctrico ciberpunk) */
+@keyframes parpadeoDigital {
+    0%, 100% { opacity: 1; box-shadow: 0 0 20px rgba(6, 182, 212, 0.8); }
+    20%, 80% { opacity: 0.9; box-shadow: 0 0 10px rgba(6, 182, 212, 0.4); }
+    40% { opacity: 0.3; box-shadow: 0 0 5px rgba(6, 182, 212, 0.1); }
+    50% { opacity: 1; box-shadow: 0 0 35px rgba(6, 182, 212, 1); }
+}
+
+/* 3. VIBRACIÓN TEMPORAL (Distorsión rúnica acelerada) */
+@keyframes vibracionTemporal {
+    0%, 100% { transform: scale(1.15) translate(0, 0); box-shadow: 0 0 20px #ea580c; }
+    25% { transform: scale(1.17) translate(-1px, 1px); }
+    50% { transform: scale(1.13) translate(1px, -1px); box-shadow: 0 0 30px #ff782b; }
+    75% { transform: scale(1.16) translate(-1px, -1px); }
+}
+/* --- TARJETA DE ESTADÍSTICAS AVANZADA --- */
+.tarjeta-clase-stats {
+    background: rgba(4, 5, 8, 0.75);
+    border: 1px solid rgba(214, 175, 55, 0.15);
+    padding: 20px;
+    margin-top: 15px;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+/* El nido del icono flotante */
+.contenedor-icono-clase {
+    width: 60px;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(214, 175, 55, 0.2);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 12px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.5);
+}
+
+.icono-clase-principal {
+    font-size: 26px;
+    transition: transform 0.3s ease;
+}
+
+.lore-clase-texto {
+    color: var(--blanco-cristal);
+    font-size: 11px;
+    line-height: 1.6;
+    font-style: italic;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: 0.5px;
+}
+
+.contenedor-barritas { width: 100%; }
+
+.barra-stat {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.barra-stat label {
+    font-size: 10px;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+    width: 80px;
+    letter-spacing: 1px;
+}
+
+.progreso-fondo {
+    width: 100%;
+    height: 8px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.02);
+}
+
+.progreso-relleno {
+    height: 100%;
+    width: 0%;
+    border-radius: 4px;
+    transition: width 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    position: relative;
+}
+
+/* ==========================================================================
+   MECÁNICA VISUAL 1: FUERZA (Rojo Vivo - Carga Pesada Imponente)
+   ========================================================================== */
+.barra-fuerza-animada {
+    background: linear-gradient(90deg, #7f1d1d, #ef4444);
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.4);
+}
+.barra-fuerza-animada::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background-size: 200% 100%;
+    animation: cargaImponente 2.5s ease-in-out infinite;
+}
+@keyframes cargaImponente {
+    0% { background-position: -150% 0; }
+    100% { background-position: 150% 0; }
+}
+
+/* ==========================================================================
+   MECÁNICA VISUAL 2: MAGIA (Cian - Carga Mística Fluida)
+   ========================================================================== */
+.barra-magia-animada {
+    background: linear-gradient(90deg, #0891b2, #22d3ee);
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+.barra-magia-animada::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, rgba(34, 211, 238, 0) 0%, rgba(255,255,255,0.4) 50%, rgba(34, 211, 238, 0) 100%);
+    background-size: 50% 100%;
+    animation: flujoMistico 1.5s linear infinite;
+}
+@keyframes flujoMistico {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* ==========================================================================
+   MECÁNICA VISUAL 3: VELOCIDAD (Amarillo - Rayo Eléctrico Fugaz)
+   ========================================================================== */
+.barra-velocidad-animada {
+    background: linear-gradient(90deg, #ca8a04, #facc15);
+    box-shadow: 0 0 10px rgba(250, 204, 21, 0.4);
+}
+.barra-velocidad-animada::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: linear-gradient(90deg, transparent 30%, #ffffff 50%, transparent 70%);
+    background-size: 20% 100%;
+    animation: rayoFugaz 0.8s ease-in infinite;
+}
+@keyframes rayoFugaz {
+    0% { background-position: -300% 0; }
+    100% { background-position: 300% 0; }
+}
+/* ==========================================================================
+   EFECTOS DE RESPIRACIÓN Y COMBATE CROMÁTICO EN LA DIFICULTAD
+   ========================================================================== */
+
+/* Añadimos una transición suave a todas las filas del panel para que el cambio no sea brusco */
+.fila-partida {
+    border: 1px solid rgba(255, 255, 255, 0.03);
+    padding: 12px;
+    border-radius: 4px;
+    transition: all 0.5s ease-in-out;
+}
+
+/* 1. PASEO EN EL VALE (Fácil - Verde Relajante) */
+.peligro-facil {
+    border-color: rgba(34, 197, 94, 0.4) !important;
+    animation: respiraVerde 3s ease-in-out infinite;
+}
+@keyframes respiraVerde {
+    0%, 100% { box-shadow: 0 0 5px rgba(34, 197, 94, 0.1); }
+    50% { box-shadow: 0 0 15px rgba(34, 197, 94, 0.3); }
+}
+
+/* 2. CRÓNICA ESTÁNDAR (Normal - Dorado Místico de Chronicles) */
+.peligro-normal {
+    border-color: rgba(214, 175, 55, 0.3) !important;
+    animation: respiraOro 3s ease-in-out infinite;
+}
+@keyframes respiraOro {
+    0%, 100% { box-shadow: 0 0 5px rgba(214, 175, 55, 0.1); }
+    50% { box-shadow: 0 0 15px rgba(214, 175, 55, 0.3); }
+}
+
+/* 3. ALMA ETHEREAL (Difícil - Rojo Fuego Inestable) */
+.peligro-dificil {
+    border-color: rgba(239, 68, 68, 0.5) !important;
+    animation: respiraRojo 2s ease-in-out infinite; /* Animación más rápida */
+}
+@keyframes respiraRojo {
+    0%, 100% { box-shadow: 0 0 5px rgba(239, 68, 68, 0.2); }
+    50% { box-shadow: 0 0 20px rgba(239, 68, 68, 0.5); }
+}
+
+/* 4. MODO MASOQUISTA (Pesadilla - Morado Vacío Mutante) */
+.peligro-pesadilla {
+    border-color: rgba(168, 85, 247, 0.6) !important;
+    animation: respiraMorado 1s ease-in-out infinite; /* Ultra rápida y parpadeante */
+}
+@keyframes respiraMorado {
+    0%, 100% { box-shadow: 0 0 8px rgba(168, 85, 247, 0.2); opacity: 1; }
+    50% { box-shadow: 0 0 25px rgba(168, 85, 247, 0.7); opacity: 0.95; }
+}
+/* ==========================================================================
+   PANTALLA DE CARGA GLOBAL Y ANILLO DE ESTRELLAS LÁSER CROMÁTICAS
+   ========================================================================== */
+.pantalla-carga-global {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: #010318; /* Oscuridad absoluta del Vale */
+    z-index: 999999; /* Por encima de todo el sistema */
+    display: none; /* Controlado por el temporizador de JS */
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease;
+}
+
+.contenedor-carga-interno {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Volvemos a inyectar las 4 estelas directamente con sombras circulares de neón difuminadas */
+.nexo-orbital-carga {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 20px auto;
+    border-radius: 50%;
+    animation: danzaOrbitalSuprema 2s linear infinite; /* Rotación rápida de inercia */
+    
+    /* ¡EL RETORNO DE LA BOLA MÁGICA!: Sombras internas que funden el orbe en 3D */
+    box-shadow: 
+        inset 15px -15px 25px -10px rgba(255, 3, 3, 0.744),    /* Gas Rojo */
+        inset -15px 15px 25px -10px rgba(0, 221, 255, 0.75),    /* Gas Cian */
+        inset -15px -15px 25px -10px rgba(255, 204, 0, 0.839),   /* Gas Amarillo */
+        inset 15px 15px 25px -10px rgb(233, 232, 232);    /* Gas Blanco */
+}
+
+/* Borramos el anillo plano anterior para que no interfiera con la burbuja */
+.nexo-orbital-carga::before { display: none !important; }
+
+
+/* Base geométrica de las estrellas de 4 puntas completas */
+.estrella-runa {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    background: #fff;
+    clip-path: polygon(50% 0%, 65% 35%, 100% 50%, 65% 65%, 50% 100%, 35% 65%, 0% 50%, 35% 35%);
+    top: 50%; left: 50%;
+    transform-origin: -35px -35px; /* Las saca del eje para que orbiten sobre el haz láser */
+    z-index: 20;
+}
+
+/* --- CALIBRACIÓN CROMÁTICA EXACTA --- */
+.runa-roja { background: #ff0000; transform: translate(35px, 35px) rotate(0deg); filter: drop-shadow(0 0 20px #f20000); }
+.runa-cian { background: #00ddff; transform: translate(35px, 35px) rotate(90deg); filter: drop-shadow(0 0 10px #00ddff); }
+.runa-amarilla { background: #ffcc00; transform: translate(35px, 35px) rotate(180deg); filter: drop-shadow(0 0 10px #ffcc00); }
+.runa-blanca { background: #ffffff; transform: translate(35px, 35px) rotate(270deg); filter: drop-shadow(0 0 10px #ffffff); }
+
+.texto-carga-medieval {
+    color: var(--oro-sutil);
+    font-family: 'Cinzel', serif;
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    text-shadow: 0 0 10px rgba(214, 175, 55, 0.3);
+}
+
+.barra-carga-progreso {
+    width: 250px;
+    height: 3px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.linea-carga-llenado {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to right, #ef0000, #00ddff, #ffcc00, #ffffff);
+    box-shadow: 0 0 10px var(--oro-brillante);
+    animation: llenadoCargaCorta 3s linear forwards;
+}
+
+/* BUCLES SUPREMOS */
+@keyframes danzaOrbitalSuprema { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+@keyframes llenadoCargaCorta { 0% { width: 0%; } 100% { width: 100%; } }
+
+/* ==========================================================================
+   VENTANAS FLOTANTES PREMIUM (ESTILO DESKTOP HOLOGRÁFICO)
+   ========================================================================= */
+.datos-mundo-flotante {
+    position: absolute;
+    bottom: 125%; /* Flota por encima de la diadema del planeta */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 260px;
+    
+    /* El efecto cristal translúcido premium  */
+    background: rgba(6, 9, 17, 0.75); 
+    backdrop-filter: blur(8px); /* Esmocha y difumina lo que esté atrás */
+    
+    border: 1px solid rgba(214, 175, 55, 0.25);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(214, 175, 55, 0.05);
+    padding: 15px;
+    border-radius: 6px;
+    
+    /* Animación suave de entrada: Nace invisible y sube */
+    opacity: 0;
+    pointer-events: none; /* Evita que estorbe al mouse si está oculta */
+    transition: transform 0.4s cubic-bezier(0.19, 1, 0.22, 1), opacity 0.3s ease;
+    z-index: 500;
+}
+
+/* Cuando el mouse entra al nodo del planeta, la ventana emerge como una carpeta */
+.mundo-nodo:hover .datos-mundo-flotante {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* Ajuste de los textos internos para que queden alineados dentro del recuadro */
+.texto-historia-dinamico {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 10.5px;
+    font-style: italic;
+    line-height: 1.6;
+    margin-top: 8px;
+    text-align: justify;
+    min-height: 70px;
+    font-family: system-ui, -apple-system, sans-serif;
+}
